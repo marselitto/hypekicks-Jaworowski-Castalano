@@ -8,9 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.example.hypekicks_jaworowski_castalano.databinding.ActivityStorefrontBinding
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.google.firebase.firestore.QuerySnapshot
-import java.util.Locale
 
 class StorefrontActivity : AppCompatActivity() {
 
@@ -27,8 +25,6 @@ class StorefrontActivity : AppCompatActivity() {
         sneakersList = mutableListOf()
         adapter = SneakerAdapter(this, sneakersList)
         binding.gridView.adapter = adapter
-
-        // seeDataBase() // Odkomentuj, aby dodać startowe dane
 
         fetchDataFromCloud()
 
@@ -55,45 +51,34 @@ class StorefrontActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        // Wymaganie: Czysty powrót - wyczyszczenie wyszukiwarki
         binding.searchView.setQuery("", false)
         binding.searchView.clearFocus()
     }
 
-    private fun seeDataBase() {
-        val sneakerList = listOf(
-            Sneaker("Nike", "Air Jordan 1 Chicago", 2022, 2500.0, "https://i.postimg.cc/PqJJLGX3/jordan1.png"),
-            Sneaker("Adidas", "Yeezy Boost 350 V2 Steel Gray", 2022, 1100.0, "https://i.postimg.cc/9f0043mx/yeezy350steelgrey2.webp"),
-            Sneaker("Nike", "Dunk Low Panda", 2021, 650.0, "https://i.postimg.cc/MGHHck65/675010-full-product.jpg"),
-            Sneaker("Jordan", "Air Jordan 4 Pine Green", 2023, 1900.0, "https://i.postimg.cc/bYxywY0G/image.png")
-        )
-
-        for (sneaker in sneakerList) {
-            db.collection("sneakers")
-                .add(sneaker)
-                .addOnSuccessListener {
-                    Log.d("FIREBASE_TEST", "Sukces! Dodano buta: ${sneaker.modelName}")
-                    fetchDataFromCloud()
-                }
-                .addOnFailureListener { e ->
-                    Log.e("FIREBASE_TEST", "Błąd podczas dodawania: ", e)
-                }
-        }
-    }
-
     private fun fetchDataFromCloud() {
         db.collection("sneakers")
-            .get()
-            .addOnSuccessListener { documents: QuerySnapshot ->
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.e("FIREBASE_ERROR", "Błąd pobierania danych: ", e)
+                    return@addSnapshotListener
+                }
+                
                 sneakersList.clear()
-                for (document in documents) {
+                for (document in snapshots!!) {
                     val sneaker = document.toObject(Sneaker::class.java)
                     sneakersList.add(sneaker)
                 }
                 adapter.updateData(sneakersList)
             }
-            .addOnFailureListener { exception ->
-                Log.e("FIREBASE_ERROR", "Błąd pobierania danych: ", exception)
-                Toast.makeText(this, "Błąd pobierania danych z Firestore!", Toast.LENGTH_LONG).show()
-            }
+    }
+    
+    // Funkcja pomocnicza do wypełnienia bazy (użyj jeśli potrzebujesz)
+    private fun seeDataBase() {
+        val list = listOf(
+            Sneaker("", "Nike", "Air Jordan 1 Chicago", 2022, 2500.0, "https://i.postimg.cc/PqJJLGX3/jordan1.png"),
+            Sneaker("", "Adidas", "Yeezy 350", 2022, 1100.0, "https://i.postimg.cc/9f0043mx/yeezy350steelgrey2.webp")
+        )
+        for (s in list) db.collection("sneakers").add(s)
     }
 }
