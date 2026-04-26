@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "33308759245",
+    "project_id": "hype-ed760",
+    "storage_bucket": "hype-ed760.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33308759245:android:d2095486a0e91e20430584",
+        "android_client_info": {
+          "package_name": "com.example.hypekicks_jaworowski_castalano"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBvtt3SdfcvjhLq91wILMAbs5nFAhbNKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
