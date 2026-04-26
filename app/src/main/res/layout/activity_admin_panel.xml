@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".AdminPanelActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Panel Administratora"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"
+        android:textColor="@android:color/black"/>
+
+    <EditText
+        android:id="@+id/etBrand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Marka (np. Nike)"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/etModelName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nazwa modelu"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/etReleaseYear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Rok wydania"
+        android:inputType="number"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/etResellPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Cena resell"
+        android:inputType="numberDecimal"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/etImageUrl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Link do zdjęcia (Postimages)"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnAddSneaker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DODAJ DO BAZY"
+        android:backgroundTint="#1A54CA"
+        android:textColor="@android:color/white"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lista butów:"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:textStyle="italic"/>
+
+    <ListView
+        android:id="@+id/lvSneakers"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

@@ -7,8 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.hypekicks_jaworowski_castalano.databinding.ActivityMainBinding
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,20 +25,18 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        // Odkomentuj poniższą linię RAZ, aby wysłać te buty do bazy danych:
-        //seeDataBase()
     }
 
     private fun seeDataBase() {
         val sneakerList = listOf(
-            Sneaker("Nike", "Air Jordan 1 Chicago", 2022, 2500.0, "https://i.postimg.cc/PqJJLGX3/jordan1.png"),
-            Sneaker("Adidas", "Yeezy Boost 350 V2 Steel Gray", 2022, 1100.0, "https://i.postimg.cc/9f0043mx/yeezy350steelgrey2.webp"),
-            Sneaker("Nike", "Dunk Low Panda", 2021, 650.0, "https://i.postimg.cc/MGHHck65/675010-full-product.jpg"),
-            Sneaker("Jordan", "Air Jordan 4 Pine Green", 2023, 1900.0, "https://i.postimg.cc/bYxywY0G/image.png"),
+            Sneaker("Nike", "Air Jordan 1 Chicago", 2022, 2500.0, "LINK_1"),
+            Sneaker("Adidas", "Yeezy Boost 350 V2 Bone", 2022, 1100.0, "LINK_2"),
+            Sneaker("Nike", "Dunk Low Panda", 2021, 650.0, "LINK_3"),
+            Sneaker("Jordan", "Air Jordan 4 Pine Green", 2023, 1900.0, "LINK_4"),
+            Sneaker("New Balance", "2002R Protection Pack", 2022, 850.0, "LINK_5")
         )
 
-        val db = Firebase.firestore
+        val db = FirebaseFirestore.getInstance()
 
         for (sneaker in sneakerList) {
             db.collection("sneakers")

@@ -1,5 +1,6 @@
 package com.example.hypekicks_jaworowski_castalano
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -7,8 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.example.hypekicks_jaworowski_castalano.databinding.ActivityStorefrontBinding
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.QueryDocumentSnapshot
+import com.google.firebase.firestore.QuerySnapshot
+import java.util.Locale
 
 class StorefrontActivity : AppCompatActivity() {
 
@@ -26,8 +28,7 @@ class StorefrontActivity : AppCompatActivity() {
         adapter = SneakerAdapter(this, sneakersList)
         binding.gridView.adapter = adapter
 
-
-         //seeDataBase()
+        // seeDataBase() // Odkomentuj, aby dodać startowe dane
 
         fetchDataFromCloud()
 
@@ -41,12 +42,21 @@ class StorefrontActivity : AppCompatActivity() {
 
         binding.gridView.setOnItemClickListener { _, _, position, _ ->
             val sneaker = adapter.getItem(position) as Sneaker
-            Toast.makeText(this, "Model: ${sneaker.modelName}", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, DetailsActivity::class.java)
+            intent.putExtra("SNEAKER_DATA", sneaker)
+            startActivity(intent)
         }
 
         binding.btnAdminPanel.setOnClickListener {
-            Toast.makeText(this, "Otwieranie Panelu Administratora...", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, AdminPanelActivity::class.java)
+            startActivity(intent)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.searchView.setQuery("", false)
+        binding.searchView.clearFocus()
     }
 
     private fun seeDataBase() {
@@ -57,14 +67,11 @@ class StorefrontActivity : AppCompatActivity() {
             Sneaker("Jordan", "Air Jordan 4 Pine Green", 2023, 1900.0, "https://i.postimg.cc/bYxywY0G/image.png")
         )
 
-        val firestoreDb = Firebase.firestore
-
         for (sneaker in sneakerList) {
-            firestoreDb.collection("sneakers")
+            db.collection("sneakers")
                 .add(sneaker)
                 .addOnSuccessListener {
                     Log.d("FIREBASE_TEST", "Sukces! Dodano buta: ${sneaker.modelName}")
-                    // Po dodaniu wszystkich, odśwież listę
                     fetchDataFromCloud()
                 }
                 .addOnFailureListener { e ->
@@ -76,7 +83,7 @@ class StorefrontActivity : AppCompatActivity() {
     private fun fetchDataFromCloud() {
         db.collection("sneakers")
             .get()
-            .addOnSuccessListener { documents ->
+            .addOnSuccessListener { documents: QuerySnapshot ->
                 sneakersList.clear()
                 for (document in documents) {
                     val sneaker = document.toObject(Sneaker::class.java)

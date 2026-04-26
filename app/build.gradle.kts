@@ -32,7 +32,7 @@ android {
     }
 
     buildFeatures{
-        viewBinding=true
+        viewBinding = true
     }
 }
 
@@ -46,8 +46,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation(platform("com.google.firebase:firebase-bom:34.12.0"))
     implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-firestore")
     implementation("com.github.bumptech.glide:glide:5.0.7")
 }

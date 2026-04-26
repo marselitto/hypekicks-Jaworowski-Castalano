@@ -24,6 +24,14 @@
         </activity>
 
         <activity
+            android:name=".DetailsActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AdminPanelActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
 
