@@ -30,8 +30,8 @@
 
         <ImageButton
             android:id="@+id/btnAdminPanel"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
             android:layout_marginStart="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="Admin"
