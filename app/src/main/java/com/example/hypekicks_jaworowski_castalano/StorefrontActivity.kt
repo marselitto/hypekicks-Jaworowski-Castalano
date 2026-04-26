@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.example.hypekicks_jaworowski_castalano.databinding.ActivityStorefrontBinding
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class StorefrontActivity : AppCompatActivity() {
 
@@ -24,8 +26,10 @@ class StorefrontActivity : AppCompatActivity() {
         adapter = SneakerAdapter(this, sneakersList)
         binding.gridView.adapter = adapter
 
-        fetchDataFromCloud()
 
+         //seeDataBase()
+
+        fetchDataFromCloud()
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean = false
@@ -35,15 +39,37 @@ class StorefrontActivity : AppCompatActivity() {
             }
         })
 
-
         binding.gridView.setOnItemClickListener { _, _, position, _ ->
             val sneaker = adapter.getItem(position) as Sneaker
             Toast.makeText(this, "Model: ${sneaker.modelName}", Toast.LENGTH_SHORT).show()
         }
 
         binding.btnAdminPanel.setOnClickListener {
-
             Toast.makeText(this, "Otwieranie Panelu Administratora...", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun seeDataBase() {
+        val sneakerList = listOf(
+            Sneaker("Nike", "Air Jordan 1 Chicago", 2022, 2500.0, "https://i.postimg.cc/PqJJLGX3/jordan1.png"),
+            Sneaker("Adidas", "Yeezy Boost 350 V2 Steel Gray", 2022, 1100.0, "https://i.postimg.cc/9f0043mx/yeezy350steelgrey2.webp"),
+            Sneaker("Nike", "Dunk Low Panda", 2021, 650.0, "https://i.postimg.cc/MGHHck65/675010-full-product.jpg"),
+            Sneaker("Jordan", "Air Jordan 4 Pine Green", 2023, 1900.0, "https://i.postimg.cc/bYxywY0G/image.png")
+        )
+
+        val firestoreDb = Firebase.firestore
+
+        for (sneaker in sneakerList) {
+            firestoreDb.collection("sneakers")
+                .add(sneaker)
+                .addOnSuccessListener {
+                    Log.d("FIREBASE_TEST", "Sukces! Dodano buta: ${sneaker.modelName}")
+                    // Po dodaniu wszystkich, odśwież listę
+                    fetchDataFromCloud()
+                }
+                .addOnFailureListener { e ->
+                    Log.e("FIREBASE_TEST", "Błąd podczas dodawania: ", e)
+                }
         }
     }
 
